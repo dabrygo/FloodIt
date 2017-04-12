@@ -11,7 +11,9 @@ public class TestFloodItModel {
 
     @Before
     public void setUp() throws Exception {
-        model = new FloodItModel(1, 2, 1);
+        Color[][] board = new Color[][] { { Color.RED, Color.BLUE }, 
+                                          { Color.GREEN, Color.YELLOW }};
+        model = new FloodItModel(board);
     }
 
     @Test
@@ -27,11 +29,11 @@ public class TestFloodItModel {
     
     @Test
     public void test_tiles_are_different_colors() {
-        assertNotEquals(model.tiles[0][0], model.tiles[0][1]);
+        assertNotEquals(model.colorOfTile(0, 0), model.colorOfTile(0, 1));
     }
     
     @Test
     public void test_color_of_first_tile() {
-        assertEquals(model.colorOfTile(0, 1), Color.RED);
+        assertEquals(model.colorOfTile(0, 0), Color.RED);
     }
 }
