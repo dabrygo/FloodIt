@@ -3,7 +3,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;

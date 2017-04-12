@@ -1,6 +1,7 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -28,26 +29,44 @@ class Game extends JPanel {
 
 public class FloodIt {
     
+    enum Colors { 
+        YELLOW(Color.YELLOW), 
+        BLUE(Color.BLUE), 
+        GREEN(Color.GREEN), 
+        PINK(Color.PINK), 
+        CYAN(Color.CYAN), 
+        ORANGE(Color.ORANGE);
+        
+        Color color;
+
+        Colors(Color color) {
+            this.color = color;
+        }
+   };
+    
     private FloodItModel floodItModel;
 
     public FloodIt() {
         JFrame frame = new JFrame();
         frame.setLayout(new BorderLayout());
 
-        floodItModel = new FloodItModel(new Color[][] {{ Color.RED, Color.RED, Color.RED },
-                                                       { Color.RED, Color.GREEN, Color.RED },
-                                                       { Color.RED, Color.RED, Color.RED }});
+        floodItModel = new FloodItModel(3, 3);
         Game game = new Game(floodItModel);
         frame.add(game, BorderLayout.CENTER);
         
-        JButton blue = new JButton("Blue");
-        blue.addActionListener(e -> {
-            floodItModel.changeActiveColor(Color.BLUE);
-            game.repaint();
-        });
-        frame.add(blue, BorderLayout.EAST);
+        JPanel buttons = new JPanel();
+        buttons.setLayout(new GridLayout(2, 3));
+        for (Colors color : Colors.values()) {
+            JButton colorButton = new JButton(color.name());
+            colorButton.addActionListener(e -> {
+                floodItModel.changeActiveColor(color.color);
+                frame.repaint();
+            });
+            buttons.add(colorButton);
+        }
+        frame.add(buttons, BorderLayout.EAST);
         
-        frame.setSize(350, 350);
+        frame.setSize(600, 800);
         frame.setTitle("FloodIt");
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

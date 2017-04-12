@@ -1,13 +1,31 @@
 import java.awt.Color;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class FloodItModel {
     public Color activeTileColor;
     public Color[][] tiles;
     public ArrayList<Point> blob;
     
-    public FloodItModel(Color[][] board, Point startingTile) {
+    public FloodItModel(int rows, int columns) {
+        this(generateRandomBoard(rows, columns));
+    }
+    
+    private static Color[][] generateRandomBoard(int rows, int columns) {
+        Color[][] board = new Color[rows][columns];
+        for (int row = 0; row < rows; row++) {
+            for (int column = 0; column < columns; column++) {
+                Random random = new Random();
+                int nColors = FloodIt.Colors.values().length;
+                int randomColorIndex = random.nextInt(nColors);
+                board[row][column] = FloodIt.Colors.values()[randomColorIndex].color;
+            }
+        }
+        return board;
+    }
+
+    FloodItModel(Color[][] board, Point startingTile) {
         tiles = board;
         blob = new ArrayList<>();
         blob.add(startingTile);
@@ -15,7 +33,7 @@ public class FloodItModel {
         updateBlob();
     }
     
-    public FloodItModel(Color[][] board) {
+    FloodItModel(Color[][] board) {
         this(board, new Point(0, 0));
     }
     
