@@ -7,6 +7,7 @@ public class FloodItModel {
     public Color activeTileColor;
     public Color[][] tiles;
     public ArrayList<Point> blob;
+    int clicks;
     
     public FloodItModel(int rows, int columns) {
         this(generateRandomBoard(rows, columns));
@@ -29,6 +30,7 @@ public class FloodItModel {
         tiles = board;
         blob = new ArrayList<>();
         blob.add(startingTile);
+        clicks = 0;
         activeTileColor = tiles[startingTile.x][startingTile.y];
         updateBlob();
     }
@@ -39,6 +41,7 @@ public class FloodItModel {
     
     public void changeActiveColor(Color newColor) {
         activeTileColor = newColor;
+        clicks++;
         repaintBlob(newColor);
         updateBlob();
     }
@@ -72,10 +75,29 @@ public class FloodItModel {
     }
     
     private boolean inBounds(Point point) {
-        return 0 <= point.x && point.x < tiles.length && 0 <= point.y && point.y < tiles[0].length;
+        return 0 <= point.x && point.x < rows() && 0 <= point.y && point.y < columns();
+    }
+
+    public int rows() {
+        return tiles.length;
+    }
+
+    private int columns() {
+        return tiles[0].length;
     }
 
     public Color colorOfTile(int row, int column) {
         return tiles[row][column];
+    }
+    
+    public boolean gameWon() {
+        for (int row = 0; row < rows(); row++) {
+            for (int column = 0; column < columns(); column++) {
+                if (!colorOfTile(row, column).equals(activeTileColor)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }
