@@ -1,6 +1,4 @@
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -19,27 +17,6 @@ public class TestFloodItModel {
                                           { Color.GREEN, Color.YELLOW }};
         model = new FloodItModel(board);
     }
-
-    @Test
-    public void test_default_active_color() {
-        assertNull(model.activeTileColor);
-    }
-
-    @Test
-    public void test_change_active_color() {
-        model.setActiveColor(Color.RED);
-        assertEquals(model.activeTileColor, Color.RED);
-    }
-    
-    @Test
-    public void test_tiles_are_different_colors() {
-        assertNotEquals(model.colorOfTile(0, 0), model.colorOfTile(0, 1));
-    }
-    
-    @Test
-    public void test_color_of_first_tile() {
-        assertEquals(model.colorOfTile(0, 0), Color.RED);
-    }
     
     @Test
     public void test_change_color_of_first_tile() {
@@ -51,5 +28,12 @@ public class TestFloodItModel {
     public void test_tile_gets_added_to_blob() {
         model.setActiveColor(Color.BLUE);
         assertTrue(model.blob.contains(new Point(0, 1)));
+    }
+    
+    @Test
+    public void test_newly_added_tile_changes_when_active_color_changes() {
+        model.setActiveColor(Color.BLUE);
+        model.setActiveColor(Color.GREEN);
+        assertEquals(model.colorOfTile(0, 1), Color.GREEN);
     }
 }

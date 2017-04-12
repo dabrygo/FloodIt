@@ -18,7 +18,7 @@ public class FloodItModel {
     public void setActiveColor(Color newColor) {
         activeTileColor = newColor;
         repaintBlob(newColor);
-        addToBlob();
+        updateBlob();
     }
 
     private void repaintBlob(Color newColor) {
@@ -27,7 +27,7 @@ public class FloodItModel {
         }
     }
 
-    private void addToBlob() {
+    private void updateBlob() {
         for (int i = 0; i < blob.size(); i++) {
             Point point = blob.get(i);
             Point rightOfPoint = new Point(point.x, point.y + 1);
