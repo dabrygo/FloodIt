@@ -39,14 +39,12 @@ public class FloodItModel {
     }
 
     void addColorsAroundPointToBlob(Point point) {
-        addPointToBlob(new Point(point.x, point.y + 1));
-        addPointToBlob(new Point(point.x, point.y - 1));
-        addPointToBlob(new Point(point.x - 1, point.y));
-        addPointToBlob(new Point(point.x + 1, point.y));
-        addPointToBlob(new Point(point.x + 1, point.y + 1));
-        addPointToBlob(new Point(point.x + 1, point.y - 1));
-        addPointToBlob(new Point(point.x - 1, point.y + 1));
-        addPointToBlob(new Point(point.x - 1, point.y - 1));
+        int[] directions = new int[] {-1, 0, 1};
+        for (int dx : directions) {
+            for (int dy : directions) {
+                addPointToBlob(new Point(point.x + dx, point.y + dy));
+            }
+        }
     }
 
     private void addPointToBlob(Point point) {
