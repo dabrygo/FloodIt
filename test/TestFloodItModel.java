@@ -1,6 +1,10 @@
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
+import java.awt.Point;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,5 +39,17 @@ public class TestFloodItModel {
     @Test
     public void test_color_of_first_tile() {
         assertEquals(model.colorOfTile(0, 0), Color.RED);
+    }
+    
+    @Test
+    public void test_change_color_of_first_tile() {
+        model.setActiveColor(Color.GREEN);
+        assertEquals(model.activeTileColor, model.colorOfTile(0, 0));
+    }
+    
+    @Test
+    public void test_tile_gets_added_to_blob() {
+        model.setActiveColor(Color.BLUE);
+        assertTrue(model.blob.contains(new Point(0, 1)));
     }
 }
