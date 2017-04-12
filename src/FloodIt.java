@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 class Game extends JPanel {
     private static final long serialVersionUID = 1L;
     private FloodItModel model;
-    private int tileSize = 100;
 
     Game(FloodItModel model) {
         this.model = model;
@@ -18,10 +17,12 @@ class Game extends JPanel {
     
     @Override
     public void paint(Graphics g) {
+        int tileWidth = (int) Math.floor(getWidth() / model.tiles.length);
+        int tileHeight = (int) Math.floor(getHeight() / model.tiles[0].length);
         for (int row = 0; row < model.tiles.length; row++) {
             for (int column = 0; column < model.tiles[0].length; column++) {
                 g.setColor(model.colorOfTile(row, column));
-                g.fillRect(row * tileSize, column * tileSize, tileSize, tileSize);
+                g.fillRect(row * tileWidth, column * tileHeight, tileWidth, tileHeight);
             }
         }
     }
@@ -34,7 +35,7 @@ public class FloodIt {
         BLUE(Color.BLUE), 
         GREEN(Color.GREEN), 
         PINK(Color.PINK), 
-        CYAN(Color.CYAN), 
+        RED(Color.RED), 
         ORANGE(Color.ORANGE);
         
         Color color;
@@ -50,7 +51,7 @@ public class FloodIt {
         JFrame frame = new JFrame();
         frame.setLayout(new BorderLayout());
 
-        floodItModel = new FloodItModel(3, 3);
+        floodItModel = new FloodItModel(100, 100);
         Game game = new Game(floodItModel);
         frame.add(game, BorderLayout.CENTER);
         
