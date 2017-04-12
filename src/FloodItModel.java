@@ -3,8 +3,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 public class FloodItModel {
-    public Color[] colors = new Color[] { Color.RED, Color.BLUE };
-    
     public Color activeTileColor;
     public Color[][] tiles;
     public ArrayList<Point> blob;
@@ -13,13 +11,15 @@ public class FloodItModel {
         tiles = board;
         blob = new ArrayList<>();
         blob.add(startingTile);
+        activeTileColor = tiles[startingTile.x][startingTile.y];
+        updateBlob();
     }
     
     public FloodItModel(Color[][] board) {
         this(board, new Point(0, 0));
     }
     
-    public void setActiveColor(Color newColor) {
+    public void changeActiveColor(Color newColor) {
         activeTileColor = newColor;
         repaintBlob(newColor);
         updateBlob();
