@@ -3,6 +3,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -35,5 +36,16 @@ public class TestFloodItModel {
         model.setActiveColor(Color.BLUE);
         model.setActiveColor(Color.GREEN);
         assertEquals(model.colorOfTile(0, 1), Color.GREEN);
+    }
+    
+    @Test
+    public void test_change_colors_around_central_square() {
+        Color[][] board = new Color[][] {{ Color.RED, Color.RED, Color.RED },
+                                         { Color.RED, Color.RED, Color.RED },
+                                         { Color.RED, Color.RED, Color.RED }};
+        FloodItModel model3By3 = new FloodItModel(board, new Point(1, 1));
+        model3By3.activeTileColor = Color.RED;
+        model3By3.addColorsAroundPointToBlob(new Point(1, 1));
+        assertEquals(9, model3By3.blob.size());
     }
 }
