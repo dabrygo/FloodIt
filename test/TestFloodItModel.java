@@ -46,5 +46,15 @@ public class TestFloodItModel {
         model3By3.activeTileColor = Color.RED;
         model3By3.addColorsAroundPointToBlob(new Point(1, 1));
         assertEquals(9, model3By3.blob.size());
+    }    
+    
+    @Test
+    public void test_do_not_add_diagonals_to_blob() {
+        Color[][] board = new Color[][] {{ Color.RED, Color.BLUE, Color.BLUE },
+                                         { Color.BLUE, Color.RED, Color.BLUE },
+                                         { Color.BLUE, Color.BLUE, Color.BLUE }};
+        FloodItModel model3By3 = new FloodItModel(board, new Point(0, 0));
+        model3By3.changeActiveColor(Color.BLUE);
+        assertEquals(Color.RED, model3By3.colorOfTile(1, 1));
     }
 }

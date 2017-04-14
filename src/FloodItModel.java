@@ -63,7 +63,9 @@ public class FloodItModel {
         int[] directions = new int[] {-1, 0, 1};
         for (int dx : directions) {
             for (int dy : directions) {
-                addPointToBlob(new Point(point.x + dx, point.y + dy));
+                if (dx != dy) {
+                    addPointToBlob(new Point(point.x + dx, point.y + dy));
+                }
             }
         }
     }
