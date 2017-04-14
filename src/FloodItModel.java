@@ -63,11 +63,16 @@ public class FloodItModel {
         int[] directions = new int[] {-1, 0, 1};
         for (int dx : directions) {
             for (int dy : directions) {
-                if (dx != dy) {
-                    addPointToBlob(new Point(point.x + dx, point.y + dy));
+                if (isDiagonal(dx, dy)) {
+                    continue;
                 }
+                addPointToBlob(new Point(point.x + dx, point.y + dy));
             }
         }
+    }
+
+    private boolean isDiagonal(int dx, int dy) {
+        return dx == dy;
     }
 
     private void addPointToBlob(Point point) {
@@ -76,12 +81,12 @@ public class FloodItModel {
         }
     }
 
-    private boolean isBlobbable(int x, int y) {
-        return colorOfTile(x, y).equals(activeTileColor);
-    }
-    
     private boolean inBounds(Point point) {
         return 0 <= point.x && point.x < rows() && 0 <= point.y && point.y < columns();
+    }
+
+    private boolean isBlobbable(int x, int y) {
+        return colorOfTile(x, y).equals(activeTileColor);
     }
 
     public int rows() {
