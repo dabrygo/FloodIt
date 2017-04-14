@@ -7,7 +7,7 @@ public class FloodItModel {
     Color activeTileColor;
     private Color[][] tiles;
     ArrayList<Point> blob;
-    int clicks;
+    private int clicks;
     
     public FloodItModel(int rows, int columns) {
         this(generateRandomBoard(rows, columns));
@@ -41,7 +41,6 @@ public class FloodItModel {
     
     public void changeActiveColor(Color newColor) {
         activeTileColor = newColor;
-        clicks++;
         repaintBlob(newColor);
         updateBlob();
     }
@@ -110,5 +109,13 @@ public class FloodItModel {
             }
         }
         return true;
+    }
+
+    public void incrementClicks() {
+        clicks += 1;
+    }
+
+    public int getClicks() {
+        return clicks;
     }
 }
