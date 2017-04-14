@@ -5,6 +5,9 @@ import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -59,6 +62,14 @@ public class FloodIt {
         frame.setLayout(new BorderLayout());
 
         newGame();
+        JMenuBar menuBar = new JMenuBar();
+        JMenu gameMenu = new JMenu("Game");
+        JMenuItem newGame = new JMenuItem("New Game");
+        newGame.addActionListener(e -> newGame());
+        gameMenu.add(newGame);
+        menuBar.add(gameMenu);
+        
+        frame.add(menuBar, BorderLayout.NORTH);
         frame.add(game, BorderLayout.CENTER);
 
         JPanel buttons = new JPanel();
@@ -75,6 +86,9 @@ public class FloodIt {
                     int n = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.YES_NO_OPTION);
                     if (n == JOptionPane.YES_OPTION) {
                         newGame();
+                    }
+                    else if (n == JOptionPane.NO_OPTION) {
+                        System.exit(0);
                     }
                 }
             });
