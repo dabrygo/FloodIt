@@ -18,10 +18,10 @@ class Game extends JPanel {
 
     @Override
     public void paint(Graphics g) {
-        int tileWidth = (int) Math.floor(getWidth() / model.tiles.length);
-        int tileHeight = (int) Math.floor(getHeight() / model.tiles[0].length);
-        for (int row = 0; row < model.tiles.length; row++) {
-            for (int column = 0; column < model.tiles[0].length; column++) {
+        int tileWidth = (int) Math.floor(getWidth() / model.rows());
+        int tileHeight = (int) Math.floor(getHeight() / model.columns());
+        for (int row = 0; row < model.rows(); row++) {
+            for (int column = 0; column < model.columns(); column++) {
                 g.setColor(model.colorOfTile(row, column));
                 g.fillRect(row * tileWidth, column * tileHeight, tileWidth, tileHeight);
             }
@@ -36,8 +36,12 @@ class Game extends JPanel {
 public class FloodIt {
 
     enum Colors {
-        YELLOW(Color.YELLOW), BLUE(Color.BLUE), GREEN(Color.GREEN), PINK(Color.PINK), RED(Color.RED), ORANGE(
-                Color.ORANGE);
+        YELLOW(Color.YELLOW), 
+        BLUE(Color.BLUE), 
+        GREEN(Color.GREEN), 
+        PINK(Color.PINK), 
+        RED(Color.RED), 
+        ORANGE(Color.ORANGE);
 
         Color color;
 
@@ -85,8 +89,7 @@ public class FloodIt {
     }
 
     private void newGame() {
-        System.out.println("new game");
-        floodItModel = new FloodItModel(3, 3);
+        floodItModel = new FloodItModel(14, 14);
         if (game == null) {
             game = new Game(floodItModel);
         }

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class FloodItModel {
-    public Color activeTileColor;
-    public Color[][] tiles;
-    public ArrayList<Point> blob;
+    Color activeTileColor;
+    private Color[][] tiles;
+    ArrayList<Point> blob;
     int clicks;
     
     public FloodItModel(int rows, int columns) {
@@ -69,9 +69,13 @@ public class FloodItModel {
     }
 
     private void addPointToBlob(Point point) {
-        if (!blob.contains(point) && inBounds(point) && tiles[point.x][point.y] == activeTileColor) {
+        if (!blob.contains(point) && inBounds(point) && isBlobbable(point.x, point.y)) {
             blob.add(point);
         }
+    }
+
+    private boolean isBlobbable(int x, int y) {
+        return colorOfTile(x, y).equals(activeTileColor);
     }
     
     private boolean inBounds(Point point) {
@@ -82,7 +86,7 @@ public class FloodItModel {
         return tiles.length;
     }
 
-    private int columns() {
+    public int columns() {
         return tiles[0].length;
     }
 
@@ -93,7 +97,7 @@ public class FloodItModel {
     public boolean gameWon() {
         for (int row = 0; row < rows(); row++) {
             for (int column = 0; column < columns(); column++) {
-                if (!colorOfTile(row, column).equals(activeTileColor)) {
+                if (!isBlobbable(row, column)) {
                     return false;
                 }
             }
