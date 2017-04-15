@@ -130,14 +130,17 @@ public class FloodIt {
         colorButton.setBackground(color.color);
         colorButton.addActionListener(e -> {
             toggleActiveColorClickable(true);
-            floodItModel.incrementClicks();
             updateClicksLabel();
             floodItModel.changeActiveColor(color);
             toggleActiveColorClickable(false);
             frame.repaint();
-            if (floodItModel.gameWon()) {
-                String message = String.format("You won in %d clicks. Play again?", floodItModel.getClicks());
-                String title = "You win! New game?";
+            if (floodItModel.gameFinished()) {
+                String message = String.format("You did not solve in %d clicks. Play again?", floodItModel.getMaximumNumberOfClicks());
+                String title = "You lose. New game?";
+                if (floodItModel.gameWon()) {
+                    message = String.format("You won in %d clicks. Play again?", floodItModel.getClicks());
+                    title = "You win! New game?";
+                }
                 int n = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
                     newGame();
@@ -157,7 +160,10 @@ public class FloodIt {
     }
 
     private void updateClicksLabel() {
-        clicksLabel.setText(String.format("Clicks: %d", floodItModel.getClicks()));
+        int clicks = floodItModel.getClicks();
+        int maximumNumberOfClicks = floodItModel.getMaximumNumberOfClicks();
+        String clickText = String.format("Clicks: %d / %d", clicks, maximumNumberOfClicks);
+        clicksLabel.setText(clickText);
     }
 
     private void newGame() {

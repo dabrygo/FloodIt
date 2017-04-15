@@ -8,6 +8,7 @@ public class FloodItModel {
     private Color[][] tiles;
     ArrayList<Point> blob;
     private int clicks;
+    private int maximumNumberOfClicks = 25;
     
     public FloodItModel(int rows, int columns) {
         this(generateRandomBoard(rows, columns));
@@ -49,6 +50,7 @@ public class FloodItModel {
     }
     
     public void changeActiveColor(Colors newColor) {
+        clicks += 1;
         activeTileColor = newColor;
         repaintBlob(newColor.color);
         updateBlob();
@@ -110,21 +112,33 @@ public class FloodItModel {
     }
     
     public boolean gameWon() {
-        for (int row = 0; row < rows(); row++) {
-            for (int column = 0; column < columns(); column++) {
-                if (!isBlobbable(row, column)) {
+        for (Color[] row : tiles) {
+            for (Color color : row) {
+                if (!color.equals(activeTileColor.color)) {
                     return false;
                 }
             }
         }
         return true;
     }
-
-    public void incrementClicks() {
-        clicks += 1;
+    
+    public boolean gameLost() {
+        return !gameWon() && clicks >= maximumNumberOfClicks;
+    }
+    
+    public boolean gameFinished() {
+        return gameWon() || gameLost();
     }
 
     public int getClicks() {
         return clicks;
+    }
+
+    public int getMaximumNumberOfClicks() {
+        return maximumNumberOfClicks;
+    }
+
+    public void setMaximumNumberOfClicks(int maximum) {
+        maximumNumberOfClicks = maximum;
     }
 }

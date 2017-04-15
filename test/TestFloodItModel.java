@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.awt.Color;
@@ -59,5 +60,36 @@ public class TestFloodItModel {
         assertEquals(Color.RED, model3By3.colorOfTile(2, 0));
         assertEquals(Color.RED, model3By3.colorOfTile(0, 2));
         assertEquals(Color.RED, model3By3.colorOfTile(2, 2));
+    }    
+    
+    @Test
+    public void test_win_on_last_click() {
+        Color[][] board = new Color[][] {{ Color.RED, Color.BLUE }};
+        FloodItModel model2By1 = new FloodItModel(board, new Point(0, 0));
+        model2By1.setMaximumNumberOfClicks(1);
+        model2By1.changeActiveColor(Colors.BLUE);
+        assertFalse(model2By1.gameLost());
+        assertEquals(Color.BLUE, model2By1.colorOfTile(0, 0));
+        assertEquals(Color.BLUE, model2By1.colorOfTile(0, 1));
+        assertTrue(model2By1.gameWon());
+    }    
+    
+    @Test
+    public void test_loss_on_last_click() {
+        Color[][] board = new Color[][] {{ Color.RED, Color.BLUE }};
+        FloodItModel model2By1 = new FloodItModel(board, new Point(0, 0));
+        model2By1.setMaximumNumberOfClicks(1);
+        model2By1.changeActiveColor(Colors.GREEN);
+        assertTrue(model2By1.gameLost());
+    }
+    
+    @Test
+    public void test_can_continue_if_not_on_last_click() {
+        Color[][] board = new Color[][] {{ Color.RED, Color.BLUE }};
+        FloodItModel model2By1 = new FloodItModel(board, new Point(0, 0));
+        model2By1.setMaximumNumberOfClicks(2);
+        model2By1.changeActiveColor(Colors.GREEN);
+        assertFalse(model2By1.gameLost());
+        assertFalse(model2By1.gameWon());
     }
 }
