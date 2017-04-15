@@ -166,13 +166,14 @@ public class FloodIt {
                 button.setVisible(true);
             }
         }
-        floodItModel = new FloodItModel(4, 4);//(14, 14);
+        floodItModel = new FloodItModel(14, 14);
         if (game == null) {
             game = new Game(floodItModel);
         }
         else {
             game.setModel(floodItModel);
             toggleActiveColorClickable(false);
+            updateClicksLabel();
         }
         frame.repaint();
     }
