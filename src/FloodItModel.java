@@ -71,7 +71,7 @@ public class FloodItModel {
     }
 
     private boolean isDiagonal(int dx, int dy) {
-        return dx == dy;
+        return dx == dy || dx == -dy;
     }
 
     private void addPointToBlob(Point point) {

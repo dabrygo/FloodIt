@@ -50,11 +50,14 @@ public class TestFloodItModel {
     
     @Test
     public void test_do_not_add_diagonals_to_blob() {
-        Color[][] board = new Color[][] {{ Color.RED, Color.BLUE, Color.BLUE },
+        Color[][] board = new Color[][] {{ Color.RED, Color.BLUE, Color.RED },
                                          { Color.BLUE, Color.RED, Color.BLUE },
-                                         { Color.BLUE, Color.BLUE, Color.BLUE }};
-        FloodItModel model3By3 = new FloodItModel(board, new Point(0, 0));
+                                         { Color.RED, Color.BLUE, Color.RED }};
+        FloodItModel model3By3 = new FloodItModel(board, new Point(1, 1));
         model3By3.changeActiveColor(Color.BLUE);
-        assertEquals(Color.RED, model3By3.colorOfTile(1, 1));
+        assertEquals(Color.RED, model3By3.colorOfTile(0, 0));
+        assertEquals(Color.RED, model3By3.colorOfTile(2, 0));
+        assertEquals(Color.RED, model3By3.colorOfTile(0, 2));
+        assertEquals(Color.RED, model3By3.colorOfTile(2, 2));
     }
 }

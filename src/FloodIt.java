@@ -162,7 +162,7 @@ public class FloodIt {
     }
 
     private void newGame() {
-        floodItModel = new FloodItModel(14, 14);
+        floodItModel = new FloodItModel(4, 4);//(14, 14);
         if (game == null) {
             game = new Game(floodItModel);
         }
