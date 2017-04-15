@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -15,6 +14,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 
 class Game extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -43,21 +43,6 @@ class Game extends JPanel {
 
 public class FloodIt {
 
-    public enum Colors {
-        YELLOW(Color.YELLOW), 
-        BLUE(Color.BLUE), 
-        GREEN(Color.GREEN), 
-        PINK(Color.PINK), 
-        RED(Color.RED), 
-        ORANGE(Color.ORANGE);
-
-        Color color;
-
-        Colors(Color color) {
-            this.color = color;
-        }
-    };
-
     private FloodItModel floodItModel;
     private JFrame frame;
     private JMenuBar menuBar;
@@ -65,6 +50,7 @@ public class FloodIt {
     private Game game;
     private JLabel clicksLabel;
     private JPanel sidePanel;
+    private JButton[] colorButtons;
 
     public FloodIt() {
         frame = new JFrame();
@@ -73,6 +59,7 @@ public class FloodIt {
         newGame();
         makeMenuBar();
         makeSidePanel();
+        toggleActiveColorClickable(false);
         
         frame.add(menuBar, BorderLayout.NORTH);
         frame.add(sidePanel, BorderLayout.EAST);
@@ -122,8 +109,12 @@ public class FloodIt {
         gridLayout.setHgap(10);
         gridLayout.setVgap(10);
         palette.setLayout(gridLayout);
-        for (Colors color : Colors.values()) {
-            palette.add(buttonFor(color));
+        colorButtons = new JButton[Colors.values().length];
+        for (int i = 0; i < Colors.values().length; i++) {
+            Colors color = Colors.values()[i];
+            JButton colorButton = buttonFor(color);
+            colorButtons[i] = colorButton;
+            palette.add(colorButton);
         }
     }
 
@@ -138,9 +129,11 @@ public class FloodIt {
         colorButton.setPreferredSize(new Dimension(50, 50));
         colorButton.setBackground(color.color);
         colorButton.addActionListener(e -> {
+            toggleActiveColorClickable(true);
             floodItModel.incrementClicks();
             updateClicksLabel();
-            floodItModel.changeActiveColor(color.color);
+            floodItModel.changeActiveColor(color);
+            toggleActiveColorClickable(false);
             frame.repaint();
             if (floodItModel.gameWon()) {
                 String message = String.format("You won in %d clicks. Play again?", floodItModel.getClicks());
@@ -157,17 +150,29 @@ public class FloodIt {
         return colorButton;
     }
 
+    private void toggleActiveColorClickable(boolean visible) {
+        String colorName = floodItModel.activeTileColor.name();
+        int colorIndex = Colors.valueOf(colorName).ordinal();
+        colorButtons[colorIndex].setVisible(visible);
+    }
+
     private void updateClicksLabel() {
         clicksLabel.setText(String.format("Clicks: %d", floodItModel.getClicks()));
     }
 
     private void newGame() {
+        if (colorButtons != null) {
+            for (JButton button : colorButtons) {
+                button.setVisible(true);
+            }
+        }
         floodItModel = new FloodItModel(4, 4);//(14, 14);
         if (game == null) {
             game = new Game(floodItModel);
         }
         else {
             game.setModel(floodItModel);
+            toggleActiveColorClickable(false);
         }
         frame.repaint();
     }

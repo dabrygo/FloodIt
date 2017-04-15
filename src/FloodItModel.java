@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class FloodItModel {
-    Color activeTileColor;
+    Colors activeTileColor;
     private Color[][] tiles;
     ArrayList<Point> blob;
     private int clicks;
@@ -18,9 +18,9 @@ public class FloodItModel {
         for (int row = 0; row < rows; row++) {
             for (int column = 0; column < columns; column++) {
                 Random random = new Random();
-                int nColors = FloodIt.Colors.values().length;
+                int nColors = Colors.values().length;
                 int randomColorIndex = random.nextInt(nColors);
-                board[row][column] = FloodIt.Colors.values()[randomColorIndex].color;
+                board[row][column] = Colors.values()[randomColorIndex].color;
             }
         }
         return board;
@@ -31,17 +31,26 @@ public class FloodItModel {
         blob = new ArrayList<>();
         blob.add(startingTile);
         clicks = 0;
-        activeTileColor = tiles[startingTile.x][startingTile.y];
+        activeTileColor = colorsFromColor(tiles[startingTile.x][startingTile.y]);
         updateBlob();
+    }
+    
+    Colors colorsFromColor(Color color) {
+        for (Colors enumColor : Colors.values()) {
+            if (enumColor.color.equals(color)) {
+                return enumColor;
+            }
+        }
+        throw new IllegalArgumentException("Unknown color: " + color);
     }
     
     FloodItModel(Color[][] board) {
         this(board, new Point(0, 0));
     }
     
-    public void changeActiveColor(Color newColor) {
+    public void changeActiveColor(Colors newColor) {
         activeTileColor = newColor;
-        repaintBlob(newColor);
+        repaintBlob(newColor.color);
         updateBlob();
     }
 
@@ -85,7 +94,7 @@ public class FloodItModel {
     }
 
     private boolean isBlobbable(int x, int y) {
-        return colorOfTile(x, y).equals(activeTileColor);
+        return colorOfTile(x, y).equals(activeTileColor.color);
     }
 
     public int rows() {
