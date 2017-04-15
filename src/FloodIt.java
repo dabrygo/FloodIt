@@ -1,10 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -70,7 +72,6 @@ public class FloodIt {
 
         newGame();
         makeMenuBar();
-        makePalette();
         makeSidePanel();
         
         frame.add(menuBar, BorderLayout.NORTH);
@@ -92,6 +93,29 @@ public class FloodIt {
         menuBar.add(gameMenu);
     }
 
+    private void makeSidePanel() {
+        sidePanel = new JPanel();
+        sidePanel.setLayout(new GridBagLayout());
+        
+        makePalette();
+        makeClicksLabel();
+
+        GridBagConstraints gc = new GridBagConstraints();
+        gc.gridx = 0;
+        gc.gridy = 0;
+        gc.weighty = 0.25;
+        gc.fill = GridBagConstraints.HORIZONTAL;
+        gc.anchor = GridBagConstraints.LINE_START;
+        sidePanel.add(palette, gc);
+
+        gc.gridx = 0;
+        gc.gridy = 1;
+        gc.weighty = 0.75;
+        gc.fill = GridBagConstraints.NONE;
+        gc.anchor = GridBagConstraints.CENTER;
+        sidePanel.add(clicksLabel, gc);
+    }
+
     private void makePalette() {
         palette = new JPanel();
         GridLayout gridLayout = new GridLayout(2, 3);
@@ -103,18 +127,15 @@ public class FloodIt {
         }
     }
 
-    private void makeSidePanel() {
-        sidePanel = new JPanel();
-        sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.PAGE_AXIS));
-        sidePanel.add(palette);
+    private void makeClicksLabel() {
         clicksLabel = new JLabel();
         clicksLabel.setFont(new Font("Arial", Font.PLAIN, 32));
         updateClicksLabel();
-        sidePanel.add(clicksLabel);
     }
 
     private JButton buttonFor(Colors color) {
         JButton colorButton = new JButton();
+        colorButton.setPreferredSize(new Dimension(50, 50));
         colorButton.setBackground(color.color);
         colorButton.addActionListener(e -> {
             floodItModel.incrementClicks();
