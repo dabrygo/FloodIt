@@ -138,7 +138,7 @@ public class FloodIt {
                 String message = String.format("You did not solve in %d clicks. Play again?", floodItModel.getMaximumNumberOfClicks());
                 String title = "You lose. New game?";
                 if (floodItModel.gameWon()) {
-                    message = String.format("You won in %d clicks. Play again?", floodItModel.getClicks());
+                    message = String.format("You won in %d clicks. Play again?", floodItModel.getClicks() - 1);
                     title = "You win! New game?";
                 }
                 int n = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.YES_NO_OPTION);

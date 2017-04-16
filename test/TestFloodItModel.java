@@ -92,4 +92,15 @@ public class TestFloodItModel {
         assertFalse(model2By1.gameLost());
         assertFalse(model2By1.gameWon());
     }
+    
+    @Test
+    public void test_win_in_two_clicks_last_click() {
+        Color[][] board = new Color[][] {{ Color.RED, Color.BLUE, Color.GREEN }};
+        FloodItModel model3By1 = new FloodItModel(board, new Point(0, 0));
+        model3By1.setMaximumNumberOfClicks(2);
+        model3By1.changeActiveColor(Colors.BLUE);
+        model3By1.changeActiveColor(Colors.GREEN);
+        assertTrue(model3By1.gameWon());
+        assertEquals(2, model3By1.getClicks());
+    }
 }
