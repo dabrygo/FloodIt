@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -7,6 +8,7 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -14,7 +16,8 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
 class Game extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -52,6 +55,47 @@ public class FloodIt {
     private JPanel sidePanel;
     private JButton[] colorButtons;
 
+
+    class OptionsDialog extends JDialog {
+        private static final long serialVersionUID = 1L;
+        private FloodItModel floodItModel;
+    
+        OptionsDialog(JFrame parent, FloodItModel model) {
+            super(parent, ModalityType.APPLICATION_MODAL);
+            floodItModel = model;
+            setLayout(new FlowLayout());
+    
+            JPanel options = new JPanel();
+            options.setLayout(new GridBagLayout());
+            GridBagConstraints gc = new GridBagConstraints();
+    
+            gc.gridx = 0;
+            gc.gridy = 0;
+            JLabel maximumClicksLabel = new JLabel("Maximum number of clicks");
+            options.add(maximumClicksLabel, gc);
+    
+            gc.gridx = 1;
+            gc.gridy = 0;
+            gc.fill = GridBagConstraints.NONE;
+            JSpinner maximumClicksSpinner = new JSpinner();
+            maximumClicksSpinner
+                    .setModel(new SpinnerNumberModel(floodItModel.getMaximumNumberOfClicks(), 1, Integer.MAX_VALUE, 1));
+            options.add(maximumClicksSpinner, gc);
+    
+            add(options);
+            JButton applyButton = new JButton("Apply");
+            applyButton.addActionListener(e -> {
+                Integer maximum = (Integer) maximumClicksSpinner.getValue();
+                floodItModel.setMaximumNumberOfClicks(maximum);
+                updateClicksLabel();
+            });
+            add(applyButton);
+    
+            setSize(new Dimension(400, 450));
+            setVisible(true);
+        }
+    }
+
     public FloodIt() {
         frame = new JFrame();
         frame.setLayout(new BorderLayout());
@@ -60,7 +104,7 @@ public class FloodIt {
         makeMenuBar();
         makeSidePanel();
         toggleActiveColorClickable(false);
-        
+
         frame.add(menuBar, BorderLayout.NORTH);
         frame.add(sidePanel, BorderLayout.EAST);
         frame.add(game, BorderLayout.CENTER);
@@ -75,15 +119,21 @@ public class FloodIt {
         menuBar = new JMenuBar();
         JMenu gameMenu = new JMenu("Game");
         JMenuItem newGame = new JMenuItem("New Game");
+        JMenuItem options = new JMenuItem("Options");
+
         newGame.addActionListener(e -> newGame());
+        options.addActionListener(e -> new OptionsDialog(frame, floodItModel));
+
         gameMenu.add(newGame);
+        gameMenu.add(options);
+
         menuBar.add(gameMenu);
     }
 
     private void makeSidePanel() {
         sidePanel = new JPanel();
         sidePanel.setLayout(new GridBagLayout());
-        
+
         makePalette();
         makeClicksLabel();
 
@@ -135,7 +185,8 @@ public class FloodIt {
             toggleActiveColorClickable(false);
             frame.repaint();
             if (floodItModel.gameFinished()) {
-                String message = String.format("You did not solve in %d clicks. Play again?", floodItModel.getMaximumNumberOfClicks());
+                String message = String.format("You did not solve in %d clicks. Play again?",
+                        floodItModel.getMaximumNumberOfClicks());
                 String title = "You lose. New game?";
                 if (floodItModel.gameWon()) {
                     message = String.format("You won in %d clicks. Play again?", floodItModel.getClicks() - 1);
@@ -144,8 +195,7 @@ public class FloodIt {
                 int n = JOptionPane.showConfirmDialog(frame, message, title, JOptionPane.YES_NO_OPTION);
                 if (n == JOptionPane.YES_OPTION) {
                     newGame();
-                }
-                else if (n == JOptionPane.NO_OPTION) {
+                } else if (n == JOptionPane.NO_OPTION) {
                     System.exit(0);
                 }
             }
@@ -175,8 +225,7 @@ public class FloodIt {
         floodItModel = new FloodItModel(14, 14);
         if (game == null) {
             game = new Game(floodItModel);
-        }
-        else {
+        } else {
             game.setModel(floodItModel);
             toggleActiveColorClickable(false);
             updateClicksLabel();
